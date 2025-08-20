@@ -1,7 +1,7 @@
 The current directory contains the C codes and the experimental data used in [1].
 __________________________________________________________________________________________________
 
-The four following sub-directories are available:
+The three following sub-directories are available:
 
 1- 'ExampleArticle': Codes and data of the example presented in the Tables 2 and 7
                      of [1] where three users u, v and w watched the movies x1 to x7.

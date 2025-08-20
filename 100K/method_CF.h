@@ -54,6 +54,96 @@ typedef struct MovieRecom{
 	float PredictedScore;
 } MovieRecom;
 
+/*
+	Computes the vote averages and the vote counts of each movie
+*/
+int Get_VoteAverages_VoteCounts(char * WatchedMoviesFileName, float * TheVoteAverages, int * TheVoteCounts){
+	FILE *f;
+	int i,j,user_id,movie_id,timestamp;
+	char c;
+	float rating;
+	
+	for(i=0;(i<MaxMovies);i++){
+		TheVoteAverages[i] = 0.0;
+		TheVoteCounts[i] = 0;
+	}
+
+	f = fopen(WatchedMoviesFileName, "rt");
+	if(!f){
+		printf("%s\n",WatchedMoviesFileName);
+		return -1;
+	} 
+	
+	// Skipping the first line
+	do{
+		fscanf(f,"%c",&c);
+	}while(c != '\n');
+	
+	i = 0;
+	while(!feof(f)){
+		fscanf(f,"%i;%i;%f;%i\n",&movie_id,&user_id,&rating,&timestamp);
+		TheVoteCounts[movie_id] += 1;
+		TheVoteAverages[movie_id] += rating;
+		i++;
+	}
+	fclose(f);
+
+	for(j=1;(j<=MaxMovies);j++){
+		if(TheVoteCounts[j] != 0){
+			TheVoteAverages[j] /= TheVoteCounts[j];
+		}
+	}
+	return i;
+}
+
+/*
+	Edits the movie data file by adding the vote averages and the vote counts
+*/
+int EditMoviesFile(char * MoviesFileName, char * EditedMoviesFileName, char * RatingFileName){
+	FILE *f, *g;
+	int i,movie_id,release_date, * TheVoteCounts;
+	float * TheVoteAverages;
+	char c;
+	
+	f = fopen(MoviesFileName, "rt");
+	if(!f){
+		printf("%s\n",MoviesFileName);
+		return -1;
+	} 
+		
+	g = fopen(EditedMoviesFileName, "wt");
+	if(!g){
+		printf("%s\n",EditedMoviesFileName);
+		return -1;
+	} 
+	
+	TheVoteCounts =  (int *)malloc(MaxMovies*sizeof(int));
+	TheVoteAverages =  (float *)malloc(MaxMovies*sizeof(float));
+	
+	Get_VoteAverages_VoteCounts(RatingFileName,TheVoteAverages,TheVoteCounts);
+
+	i = 0;
+	fscanf(f,"%i,%i,",&movie_id,&release_date);
+	while(!feof(f)){
+		fprintf(g,"%i,%i,",movie_id,release_date);
+		fprintf(g,"%.2f,%i,",TheVoteAverages[movie_id],TheVoteCounts[movie_id]);
+		//printf("%i;%.2f;%i\n",movie_id,TheVoteAverages[movie_id],TheVoteCounts[movie_id]);
+		do{
+			fscanf(f,"%c",&c);
+			fprintf(g,"%c",c);
+		}while(c != '\n');
+		i++;
+		if(!feof(f)){
+			fscanf(f,"%i,%i,",&movie_id,&release_date);
+		}
+	}
+	fclose(f);
+	fclose(g);
+	
+	free(TheVoteCounts);
+	free(TheVoteAverages);
+	return i;
+}
 
 // Reads the movie data 
 int ReadMovies(char * MoviesFileName, Movie * TheMovies){

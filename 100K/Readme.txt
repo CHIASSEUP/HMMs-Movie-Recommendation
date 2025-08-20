@@ -51,10 +51,13 @@ ________________________________________________________________________________
 
 6-Input files :
 
-   - 'movies.data':  the movie features in the system.
-   - 'users.data':   the user features in the system.
-   - 'ratings_movies.csv': the ratings sorted by (movie_id->timestamp->rating->user_id) 
-   - 'ratings_users.csv':  the ratings sorted by (user_id->timestamp->rating->movie_id) 
+   - 'movies_original.data':  the original movie features in the system 
+                              without the vote counts and the vote averages.
+   - 'movies.data':           all the movie features in the system 
+                              including the vote counts and the vote averages.
+   - 'users.data':            all the user features in the system.
+   - 'ratings_movies.csv':    the ratings sorted by (movie_id->timestamp->rating->user_id) 
+   - 'ratings_users.csv':     the ratings sorted by (user_id->timestamp->rating->movie_id) 
 __________________________________________________________________________________________________
 
 7-Output files :

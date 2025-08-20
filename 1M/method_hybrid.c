@@ -153,14 +153,7 @@ int main(int NbArg, char ** MesArg) {
 	}
 	/**
 		End of the heap memory allocation for the CF sub-system
-	**/
-
-	/*
-		Inserting the vote averages and the vote counts in the dataset
-	*/
-	
-	//EditMoviesFile("movies.data","movies.txt","ratings.data",MissingMovies,&NbMissingMovies,MissingVotes,&NbMissingVotes);
-	
+	**/	
 	
 	TmaxWatchedMovies = atoi(MesArg[1]);
 	if((TmaxWatchedMovies > MaxWatchedMovies)||(TmaxWatchedMovies <= 10)){
@@ -204,8 +197,17 @@ int main(int NbArg, char ** MesArg) {
 		printf("%s file\n",FinalVectors_FileName);
 		return -1;
 	} 
+
+    QueryPerformanceCounter(&end);
+	Duration = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+	printf("\nInitialization time = %.2f s\n",Duration);
+	
+    QueryPerformanceCounter(&start);
 		
 	printf("\n======= Reading the DATASET =======\n");
+
+	/* Insertion of the vote averages and the vote counts in the dataset */ 
+	//EditMoviesFile("movies_original.data","movies.data","ratings_movies.csv");
 
 	NbMovies = ReadMovies(MesArg[7],TheMovies);
 	printf("%i Movies\n",NbMovies);

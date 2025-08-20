@@ -81,7 +81,7 @@ int Get_VoteAverages_VoteCounts(char * WatchedMoviesFileName, float * TheVoteAve
 	
 	i = 0;
 	while(!feof(f)){
-		fscanf(f,"%i,%i,%f,%i\n",&user_id,&movie_id,&rating,&timestamp);
+		fscanf(f,"%i;%i;%f;%i\n",&movie_id,&user_id,&rating,&timestamp);
 		TheVoteCounts[movie_id] += 1;
 		TheVoteAverages[movie_id] += rating;
 		i++;

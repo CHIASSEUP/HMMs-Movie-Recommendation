@@ -12,7 +12,6 @@
 #include "method_CB.h"
 #include "cores.h"
 
-
 /**
 ________________________________________________________________________________________________   
    Compilation command line (200 Mb of stack memory are required) :
@@ -201,7 +200,16 @@ int main(int NbArg, char ** MesArg) {
 		return -1;
 	} 
 
+    QueryPerformanceCounter(&end);
+	Duration = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
+	printf("\nInitialization time = %.2f s\n",Duration);
+	
+    QueryPerformanceCounter(&start);
+		
 	printf("\n======= Reading the DATASET =======\n");
+
+	/* Insertion of the vote averages and the vote counts in the dataset */ 
+	//EditMoviesFile("movies_original.data","movies.data","ratings_movies.csv");
 		
 	NbMovies = ReadMovies(MesArg[7],TheMovies);
 	printf("%i Movies\n",NbMovies);
